@@ -23,18 +23,23 @@ export default function Home() {
   
 
   useEffect(() => {
+    
   async function loadCargos() {
-    const { data, error } = await supabase
-      .from("cargos")
-      .select("*");
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+  const { data, error } = await supabase
+    .from("cargos")
+    .select("*");
 
-    setDbCargos(data || []);
+  console.log("DATA =", data);
+  console.log("ERROR =", error);
+
+  if (error) {
+    console.error(error);
+    return;
   }
+
+  setDbCargos(data || []);
+}
 
   loadCargos();
 }, []);
@@ -100,25 +105,32 @@ export default function Home() {
               const space = Number(availableSpace);
             
 
-
-              const filtered = cargos.filter((cargo) => {
+              const filtered = dbCargos.filter((cargo) => {
+  
 
   const weightMatch = cargo.weight <= space;
 
   const currentCityMatch =
-  currentCity === "" ||
-  cargo.pickup.toLowerCase() === currentCity.toLowerCase();
-                const destinationMatch =
-  destination === "" ||
-  cargo.dropoff.toLowerCase().trim() ===
-  destination.toLowerCase().trim();
+    currentCity === "" ||
+    cargo.pickup.toLowerCase() === currentCity.toLowerCase();
+
+  const destinationMatch =
+    destination === "" ||
+    cargo.dropoff.toLowerCase().trim() ===
+      destination.toLowerCase().trim();
+
+  console.log({
+    weightMatch,
+    currentCityMatch,
+    destinationMatch,
+  });
+
   return (
-  weightMatch &&
-  currentCityMatch &&
-  destinationMatch
-);
-              }
-);
+    weightMatch &&
+    currentCityMatch &&
+    destinationMatch
+  );
+});
 
 
 
